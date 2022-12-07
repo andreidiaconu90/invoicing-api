@@ -1,3 +1,26 @@
+# Thoughts
+
+Due to the fact that i couldn't find enough time to work on this and finish all the tasks, i'll leave below a couple of comments:
+
+## Project structure
+I've modified the project structure a bit in order to make it more readable/extensible:
+* Moved the controller logic out of the app.js file and into their own files
+* Moved the routing out of the app.js file into it's own file. Because there weren't so many routes i've kept all the definition in one `index.js` file, but this can be further extendend through extracting related routes in separate files and referecing those in the `index.js` file, which is terms is used in the app.js file.
+* Controllers are grouped by folders, with business-related controllers in the same folder
+* Business logic is separated into a Services folder, in  *Service.js files, which can be grouped in domain-specific folder.
+
+## Database access
+I think the main challange of this task is in regards to data integrity and concurrent access to the database (the "at the moment" hints in the requirements helped😄). For data integrity i've used Sequelize's managed transactions inside try/catch blocks making sure that if something breaks during the process I'm not left with inconsistent data. 
+
+Although i haven't necessarily had real, production grade, concurrency problems before, I knew about things like `SELECT ... FOR UPDATE` and locks. Discovered that SQLite doesn't support the `SELECT ... FOR UPDATE` directly but, by wrapping a query, with `lock:true`, in a transaction should pretty much result in a SELECT ... FOR UPDATE. The lock seems to be necessary on `SELECT` statements because a transaction will lock the rows only after an `INSERT/UPDATE` statement. 
+
+
+## If i had more time
+* Definately adding unit tests would have been my go to. If interested, [I have a repo](https://github.com/andreidiaconu90/aws-lambda-api/blob/main/src/specs/MovieService.spec.ts) with my usual stack which also includes a test with `mocha`, `sinon` and `chai`.
+* For the extra credit i would have gone for  a [Postman/Newman](https://github.com/postmanlabs/newman) E2E test collection, which would have showed the transaction/locks working as it has the posibility to trigger concurrent requests to you API. If you're interesed in how it would have looked like i have a repository from a while back [here](https://github.com/andreidiaconu90/Postman-Newman-Love)(it's in dotnet/C# but the newman part is agnostic) 
+
+### Thanks!
+
 # DEEL BACKEND TASK
 
 💫 Welcome! 🎉
